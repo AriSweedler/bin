@@ -63,8 +63,8 @@ STYLE PS1_AT '@' light BLUE
 STYLE PS1_HOST '\h' light RED
 STYLE PS1_DIR '\W' dark GREEN
 STYLE PS1_END '> ' light BLUE
-STYLE OPENB '[' dark GREEN; STYLE CLOSEB ']'
+STYLE PS1_OPENB '[' dark GREEN; STYLE PS1_CLOSEB ']'
 
 ################################
 # Do the actual export, placing the parts in any order
-export PS1="${PS1_OPENB}${PS1_USER}${PS1_AT}${PS1_HOST}${PS1_CLOSEB} $PS1_DIR $PS1_END"
+export PS1="${PS1_OPENB}${PS1_USER}${PS1_AT}${PS1_HOST}${PS1_CLOSEB} $PS1_TIME $PS1_DIR $PS1_END"
