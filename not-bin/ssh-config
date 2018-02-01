@@ -1,0 +1,13 @@
+Host *
+	AddKeysToAgent yes
+	UseKeychain yes
+
+Host ucla6
+	Hostname lnxsrv06.seas.ucla.edu
+
+Host ucla7
+	Hostname lnxsrv07.seas.ucla.edu
+
+Host ucla*
+	user ari
+	Hostname lnxsrv09.seas.ucla.edu

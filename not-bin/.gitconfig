@@ -1,0 +1,23 @@
+# This is Git's per-user configuration file.
+[user]
+	name = Ari Sweedler
+	email = ari@sweedler.com
+	username = arisweedler
+
+[core]
+	excludesfile = ~/.gitignore
+
+[color "diff"]
+	meta = yellow black bold
+	frag = magenta black bold
+	old = red bold
+	new = green bold
+
+[color "status"]
+	added = green black bold
+	changed = yellow black bold
+	untracked = red reverse bold
+
+[alias]
+	l = log --pretty=oneline --abbrev-commit
+	s = status
