@@ -43,11 +43,18 @@ You can see what it looks like on my
 [twitter](https://twitter.com/Adsweed/status/954638087660777475). Or here:
 ![cowsay pwd](img/cowsay-pwd.png)
 
-## mt-lnxsrv unmount-lnxsrv
+## myMount / unmount-myMount
 
-Tab completion was my motivation for not making these aliases. Also, it's noice that I'm able to check to see if my mountpoint is mounted before mounting something, this means that if I ever wanna mount more than 1 remote disks at once, I can just call my mt-XXX script and it has the ability to unmount the other disk, if I don't want that. Also, TAB COMPLETION. Who the heck types out full wor.
+I have these coubled with the following aliases:
 
-ds.
+    alias mount-beaglebone='myMount bb /root'
+    alias mt-lnxsrv='myMount ucla /u/cs/ugrad/ari/Classes/'
+
+I love these scripts, because they make mounting my remote folders so easy!! I've implemented checks to see if I'm connected before trying to mount because sshfs doesn't fail very well, it's not that robust.
 
 ![mount unmount](img/mount-unmount.gif)
+
+## connected <server>
+
+Ping the server represented by argument once. Only wait for 100ms to recieved a response. Pipe all stderr to stdout, and pipe all stdout to THE VOID
 

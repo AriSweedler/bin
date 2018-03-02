@@ -1,0 +1,48 @@
+#######################################################################
+#                                                                     #
+#   .bashrc file                                                      #
+#                                                                     #
+#   commands to perform from the bash shell at login time             #
+#                                                                     #
+#######################################################################
+
+#This was my hello-world line for learning about bash :')
+echo "Today's date is `date`"
+#This number is my home directory's inode lol
+echo "	Hello, user number 1081314"
+
+#Setting PATH, and exporting it in the end.
+PATH="$PATH:$HOME/bin"
+PATH="$PATH:/mongodb/bin"
+export PATH="$PATH:/Applications/SWI-Prolog.app/Contents/MacOS"
+export EDITOR=vim
+
+#Surprisingly this is actually v useful
+HISTIGNORE="&:[ \t]*:ls"
+HISTSIZE=5000
+
+#when invoking 'ls', I'll get colors.
+export LSCOLORS='exGxFxDacxDxDxHbaDacec'
+export CLICOLOR=1
+
+#setting small aliases
+alias vi="vim"
+alias pwdd='. cowsay-pwd'
+alias mt-lnxsrv='myMount ucla /u/cs/ugrad/ari/Classes/'
+alias mount-beaglebone='myMount bb /root'
+alias work='. work' #https://stackoverflow.com/questions/255414/why-doesnt-cd-work-in-a-bash-shell-script
+alias workn='. work 111 4b'
+alias prolog='swipl'
+
+MONGOD_CONF="/etc/mongodb.conf"
+alias mongod="echo \"	running mongod with config file: $MONGOD_CONF\";sudo mongod -f \"$MONGOD_CONF\""
+
+# enable rlwrap for Scheme and OCaml
+alias scheme="echo '        rlwrap enabled';rlwrap scheme"
+alias ocaml="echo '        rlwrap enabled';rlwrap ocaml"
+# I don't need a package manager for ocaml. But, leaving this here in case I ever do.
+#. /Users/ari/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
+# eval `opam config env`
+
+# Sourcing PS1 script
+. "$HOME/bin/PS1_custom.sh"
