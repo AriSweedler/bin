@@ -10,7 +10,7 @@ function isMounted {
 
 
 if isMounted ~/Desktop/mnt; then
-  printf "lnxsrv was already mounted.\n"
+  printf "~/Desktop/mnt was already mounted\n"
   printf "\tUnmounting"
   umount ~/Desktop/mnt
   printf "\tDone!\n"

@@ -1,0 +1,31 @@
+#!/bin/bash
+
+CLASS=CS-"$1"
+PROJECT="$2"-project
+
+WORKING_DIR="/Users/ari/Desktop/mnt/${CLASS}/${PROJECT}"
+
+#confirming with myself lol
+echo "Do you wish to CD into this dir:"
+echo "	'$WORKING_DIR'"
+
+#check to see if the dir doesn't exist
+if [ ! -d "$WORKING_DIR" ]; then
+  echo ""
+  echo "!!!!!!!!	No such dir. Exiting.	!!!!!!!!"
+  (set -x; ls /Users/ari/Desktop/mnt/)
+  (set -x; ls /Users/ari/Desktop/mnt/${CLASS})
+  (set -x; ls /Users/ari/Desktop/mnt/${CLASS}/${PROJECT})
+  echo ""
+  return
+fi
+
+#confirm and execute
+echo
+printf "(^C to abort)\t[Y] or N:\t"
+read -sn 1 ANS
+case $ANS in
+    [Yy]|""  )  echo "yes"; cd $WORKING_DIR; echo "success";;
+    [Nn]     )  echo "no";;
+    *        )  echo "unrecognized option";;
+esac
