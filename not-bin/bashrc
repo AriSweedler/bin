@@ -18,21 +18,34 @@ export PATH="$PATH:/Applications/SWI-Prolog.app/Contents/MacOS"
 export EDITOR=vim
 
 #Surprisingly this is actually v useful
-HISTIGNORE="&:[ \t]*:ls"
+HISTIGNORE="&:[ \t]*:ls:cat:less"
 HISTSIZE=5000
 
+#####################V ALIASES V############################
 #when invoking 'ls', I'll get colors.
 export LSCOLORS='exGxFxDacxDxDxHbaDacec'
 export CLICOLOR=1
 
-#setting small aliases
-alias vi="vim"
-alias pwdd='. cowsay-pwd'
-alias mt-lnxsrv='myMount ucla /u/cs/ugrad/ari/Classes/'
-alias mount-beaglebone='myMount bb /root'
-alias work='. work' #https://stackoverflow.com/questions/255414/why-doesnt-cd-work-in-a-bash-shell-script
-alias workn='. work 111 4b'
+#small aliases
 alias prolog='swipl'
+alias pwdd='. cowsay-pwd'
+alias vi=vim
+
+#my aliases to help me cd around
+alias work='cd $(cat ~/.config/work)'
+
+#my aliases to help me mount/unmount
+alias mount-lnxsrv='myMount ucla /u/cs/ugrad/ari/Classes/'
+alias mount-bb='myMount bb /root'
+alias mount-bbu='myMount bbu /Users/ari'
+alias unmount-lnxsrv='myUnmount ucla'
+alias unmount-bb='myUnmount bb'
+alias unmount-bbu='myUnmount bbu'
+#shortened versions
+alias ml='mount-lnxsrv'
+alias mbb='mount-bb'
+alias mbbu='mount-bbu'
+#####################^ ALIASES ^############################
 
 MONGOD_CONF="/etc/mongodb.conf"
 alias mongod="echo \"	running mongod with config file: $MONGOD_CONF\";sudo mongod -f \"$MONGOD_CONF\""
@@ -44,5 +57,5 @@ alias ocaml="echo '        rlwrap enabled';rlwrap ocaml"
 #. /Users/ari/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
 # eval `opam config env`
 
-# Sourcing PS1 script
+# Sourcing PS1 script for that dank pwd
 . "$HOME/bin/PS1_custom.sh"

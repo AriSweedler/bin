@@ -1,0 +1,19 @@
+#!/bin/bash
+
+MOUNTPOINT="$HOME/Desktop/mnt-$1"
+
+if mount | grep -qs $MOUNTPOINT; then
+  echo "$MOUNTPOINT currently mounted"
+  printf "\tUnmounting\t"
+  if umount $MOUNTPOINT >> /dev/null 2>&1; then
+    echo "Success!"
+    rmdir $MOUNTPOINT
+    exit 0
+  else
+    echo "Fail."
+    echo "....The disk might be in use by iTerm or Sublime"
+    exit 1
+  fi
+else
+  echo "$MOUNTPOINT not currently mounted"
+fi

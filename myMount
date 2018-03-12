@@ -1,20 +1,28 @@
 #!/bin/bash
-MOUNTPOINT="$HOME/Desktop/mnt"
 HOST="$1"
 REMOTE_FOLDER="$2"
-FLAGS="-o auto_cache,reconnect,defer_permissions,noappledouble,volname=lnxsrv"
 
-if [ $HOST = "ucla" ] && ! connected lnxsrv.seas.ucla.edu; then
-  echo "Server offline. Are you connected to the VPN?"
-elif [ $HOST = bb ] && ! connected 192.168.6.2; then
-  echo "BeagleBone offline. Is it plugged in?"
-else
-  source unmount-myMount
-  printf "\tMounting"
-  sshfs $HOST:$REMOTE_FOLDER $MOUNTPOINT $FLAGS
-  printf "\tDone!\n"
-  exit 0
+if [ $HOST = "ucla" ]; then
+  VOLNAME="lnxsrv"
+  connected lnxsrv.seas.ucla.edu
+elif [ $HOST = bb ]; then
+  VOLNAME="beaglebone-root"
+  connected 192.168.6.2
+elif [ $HOST = bbu ]; then
+  VOLNAME="beaglebone-ari"
+  connected 192.168.6.2
 fi
 
-echo "Exiting script"
-exit 1
+if [ $? -ne 0 ]; then
+  echo "$VOLNAME not connected, mount failed."
+  echo "Exiting script"
+  exit 1
+fi
+
+FLAGS="-o auto_cache,reconnect,defer_permissions,noappledouble,volname=${VOLNAME}"
+MOUNTPOINT="$HOME/Desktop/mnt-$HOST"
+
+printf "\tMounting"
+sshfs $HOST:$REMOTE_FOLDER $MOUNTPOINT $FLAGS
+printf "\tSuccess!\n"
+
