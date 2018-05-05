@@ -29,10 +29,13 @@ export CLICOLOR=1
 #small aliases
 alias prolog='swipl'
 alias pwdd='. cowsay-pwd'
+alias fortunee='. cowsay-fortune'
 alias vi=vim
+alias league="open /Applications/League\ of\ Legends.app/"
 
 #my aliases to help me cd around
 alias work='cd $(cat ~/.config/work)'
+alias tensorflow='echo ""; cd $HOME/Library/VirtualEnv; source bin/activate'
 
 #my aliases to help me mount/unmount
 alias mount-lnxsrv='myMount ucla /u/cs/ugrad/ari/Classes/'

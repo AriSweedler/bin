@@ -43,6 +43,10 @@ You can see what it looks like on my
 [twitter](https://twitter.com/Adsweed/status/954638087660777475). Or here:
 ![cowsay pwd](img/cowsay-pwd.png)
 
+## cowsay-fortune
+
+This idea is funny
+
 ## myMount / unmount-myMount
 
 I have these coubled with the following aliases:
