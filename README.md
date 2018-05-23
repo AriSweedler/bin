@@ -1,4 +1,5 @@
 # Hi! Welcome to my bin.
+### (And my dotfiles)
 
 This is where I keep all my executables. Right now, it's just a bunch of shell scripts. I save them in my bin, because my bin's in my path. And that's a good thing because it lets me take advantage of bash's autocompletion feature! Aliasing could actually accomplish the cowsay-pwd function, or the mounting/unmounting of the lnxsrv, but I like typing mt-<tab> and unm<tab> WAY more than the full sentence.
 
@@ -61,4 +62,9 @@ I love these scripts, because they make mounting my remote folders so easy!! I'v
 ## connected <server>
 
 Ping the server represented by argument once. Only wait for 100ms to recieved a response. Pipe all stderr to stdout, and pipe all stdout to THE VOID
+
+
+## Dotfiles
+Read about those [here](https://github.com/AriSweedler/arisweedler-bin/tree/master/dotfiles)
+
 
