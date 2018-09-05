@@ -1,8 +1,9 @@
 #!/bin/bash
 
-#This script makes it easier to create a colored prompt script.
-#Bash colored output works by sending an unprinted escape sequence to get the console to switch "pen color"
-#non-printing escape sequences have to be enclosed in \[ESC[ and \].
+# This script makes it easier to create a colored prompt script.
+# Bash colored output works by sending an unprinted escape sequence to get the
+# console to switch "pen color" non-printing escape sequences have to be
+# enclosed in \[ESC[ and \].
 END_COLOR='\[\e[0m\]'  #'\033'='\e'='^['='\0x1b'='ESC in ascii'
 SET_COLOR=$END_COLOR
 
@@ -12,7 +13,8 @@ function SET_C() {
     if [ $# = 0 ]; then
         return
     fi
-    # If we only get one parameter, then assume it's just the color. Call this function with "plain" as the style
+    # If we only get one parameter, then assume it's just the color. Call this
+    # function with "plain" as the style
     if [ $# = 1 ]; then
         SET_C plain $1
         return
@@ -29,6 +31,7 @@ function SET_C() {
     esac
 
     case $2 in
+	"CLEAR")	COLOR="00";;
         "BLACK")        COLOR="30";;
         "RED")          COLOR="31";;
         "GREEN")        COLOR="32";;
@@ -41,8 +44,9 @@ function SET_C() {
     esac
     # Start color variable
     SET_COLOR="\[\e[${STYLE};${COLOR}m\]"
-    #Fun fact: we have to escape the brackets to make sure that bash knows how to calculate PS1's length.
-    #Without the escaped brackets, bash would miscalculate PS1's length and wrap around at the wrong time.
+    # We have to escape the brackets to make sure that bash knows how to
+    # calculate PS1's length. Without the escaped brackets, bash would
+    # miscalculate PS1's length and wrap around at the wrong time.
 }
 
 #This function makes my styling calls prettier.
@@ -50,6 +54,12 @@ function SET_C() {
 function STYLE() {
   SET_C $3 $4
   eval "$1='${SET_COLOR}$2'" #This establishes $1 as a shell variable.
+}
+
+################################
+parse_git_branch ()
+{
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
 
 ################################
@@ -62,13 +72,17 @@ else
 fi
 
 STYLE PS1_TIME '[\@]' dark YELLOW
-STYLE PS1_USER "$PS1_USER_BODY" BLUE
+STYLE PS1_at 'at' CLEAR
+STYLE PS1_USER "$PS1_USER_BODY" dark RED
+STYLE PS1_in 'in' CLEAR
 STYLE PS1_DIR '\W' dark GREEN
-STYLE PS1_END '🚀 > ' light BLUE
+STYLE PS1_GIT_BRANCH '$(parse_git_branch)' YELLOW
+#STYLE PS1_GIT '$(__git_ps1 "- (%s)")' RED
+STYLE PS1_END '\n🚀 $ ' light BLUE
 
 ################################
 # Assemble the parts as you wish
-PS1="$PS1_TIME $PS1_USER $PS1_DIR $PS1_END"
+PS1="$PS1_TIME $PS1_at $PS1_USER $PS1_in $PS1_DIR $PS1_GIT_BRANCH $PS1_END"
 ################################
 # Do the actual export, setting the color back to the default at the end
 export PS1="${PS1}${END_COLOR}"

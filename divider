@@ -1,0 +1,74 @@
+#!/usr/bin/env python
+
+import argparse, sys
+
+def myParse():
+    # initialize parser object
+    parser = argparse.ArgumentParser(description='Make a pretty divider for code')
+
+    # generic arguments
+    parser.add_argument('-w', '--width', type=int, metavar='COLUMNS')
+    parser.add_argument('string', nargs='?')
+
+    # relevant syntaxes
+    group = parser.add_mutually_exclusive_group(required=False)
+    group.add_argument('-c', '--cpp', action='store_true',
+        help='set comment style to C: /* * */')
+    group.add_argument('-p', '--python', action='store_true',
+        help='set comment style to python: #')
+    group.add_argument('-v', '--vim', action='store_true',
+        help='set comment style to vim: "')
+    group.add_argument('-d', '--dashes', action='store_true',
+        help='set comment style to dashes: -')
+
+    # set defaults
+    parser.set_defaults(width=80, string='', indent=0)
+
+    # return parsed arguments
+    return parser.parse_args(sys.argv[1:])
+
+def figure_com(args):
+    start, ch, end = "", "", ""
+    if args.cpp:
+        start, ch, end = "/*", "*", "*/"
+    elif args.python:
+        ch = "#"
+    elif args.vim:
+        ch = "\""
+    elif args.dashes:
+        ch = "-"
+        args.width = 67
+    else:
+        start, ch, end = "/*", "*", "*/"
+
+    return {"start": start, "ch": ch, "end": end}
+
+def figure_str(args, com):
+    # calculate
+    totalLen = args.width - len(args.string)
+    sideLen = totalLen / 2
+    # pad string with space
+    joiner = ''
+    if args.string:
+        sideLen -= 1
+        joiner = ' '
+    # calculate
+    leftLen = sideLen - len(com['start'])
+    rightLen = sideLen - len(com['end'])
+
+
+    # generate our answer
+    mid = sideLen*com['ch']
+    left = com['start'] + mid[:leftLen] + joiner
+    right = joiner + mid[:rightLen] + com['end']
+
+    return left, right
+
+def main():
+    args = myParse()
+    com = figure_com(args)
+    left, right = figure_str(args, com)
+    print(left + args.string + right)
+
+if __name__== "__main__":
+    main()
