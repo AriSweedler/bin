@@ -1,7 +1,9 @@
 #!/bin/bash
 
-HOST="ub64"
+# specify host
+HOST="ucla"
 
+# excludes
 FLAGS="-av"
 EXCLUDE=(*.o .*.swp *.vcxproj* *.dbg)
 for ex in ${EXCLUDE[@]}
@@ -10,9 +12,8 @@ do
 done
 
 src="$HOME/Desktop/"
-dest="${HOST}:/source/"
-#item="hawkeye/apps/vtap/src/server/os/linux"
-item="hawkeye/apps"
+dest="${HOST}:~/Classes/CS-117/"
+item="hw1/"
 
 src+="$item"
 dest+="`dirname $item`"

@@ -1,26 +1,46 @@
 # Hi! Welcome to my bin.
-### (And my dotfiles)
 
-This is where I keep all my executables. Right now, it's just a bunch of shell scripts. I save them in my bin, because my bin's in my path. And that's a good thing because it lets me take advantage of bash's autocompletion feature! Aliasing could actually accomplish the cowsay-pwd function, or the mounting/unmounting of the lnxsrv, but I like typing mt-<tab> and unm<tab> WAY more than the full sentence.
+This is where I keep all my executables. I save them in my bin, because my bin's in my path. And that's a good thing because it lets me take advantage of bash's autocompletion feature! Typing <kbd>d</kbd><kbd>i</kbd><kbd>v</kbd><kbd>Tab</kbd> lets me quickly call my "divider" function. This is especially neat when used directly in vim. Executing the vim command `:read !divider --width 15 --vim ':)'` yields `""""" :) """""`
 
-## PS1-custom
+Also check out my [dotfiles](https://github.com/AriSweedler/dotfiles) repo!
 
-Here's a script that'll help you create a custom-made PS1. You can have a fun PS1 in 2 steps!
+## bash\_prompt.sh
 
-1. Customize what you want your PS1 to look like
+Here's a script that'll help you create a custom-made PS1. You can have a fun prompt script really easily! [Source](https://stackoverflow.com/questions/45761508/whats-the-difference-between-script-or-source-script-bash-script) the shell script upon startup. You can use your ~/.bashrc for this. [Here](https://unix.stackexchange.com/questions/129143/what-is-the-purpose-of-bashrc-and-how-does-it-work) is more info on the different run command files.
 
-2. [Source](https://stackoverflow.com/questions/45761508/whats-the-difference-between-script-or-source-script-bash-script) the shell script in your .profile file (or .bashrc or .bash_profile)
+Boom! Just like that, you have a neat and fancy PS1. Now dive into the script and edit it if you want! All the color variables at the top are escape codes. So instead of being printed out, they simply set the terminal's pen color.
 
-Boom! Just like that, you have a neat and fancy PS1. You can check out what mine looks like:
-![my PS1](img/myPS1.png)
- 
-I tried to make the script easy to use, *the only stuff that you'll need to modify is near the bottom*, under the sections labeled "Set the colors" and "Assemble". You can customize your PS1 by changing the calls to STYLE.
- 
-To customize your PS1, you'll make heavy use of my STYLE function in the "set the colors and parts" section. Each time you call the STYLE function, it'll initialize a shell variable containing the string you passed it preceeded by the escape code for the style you decide to give it (light RED, bold YELLOW, etc.). Make sure you pay attention to casing when naming styles!!
+Check out the following links for more details:
 
-Then, once you've initialized and styled all your chunks of your PS1, you can put them together however you want in the "assemble" section, and you'll have your finished product!
+1. Check out the [bash man page](https://linux.die.net/man/1/bash), the section titled "Prompting" (What does '\W' do?)
 
-Check out the following links for more details: 1. More about escape codes for [colors](http://tldp.org/HOWTO/Bash-Prompt-HOWTO/x329.html) in bash 2. Check out the [bash man page](https://linux.die.net/man/1/bash), the section titled "Prompting"
+1. Learn more about escape codes for pretty colors in bash [here](https://misc.flogisoft.com/bash/tip_colors_and_formatting)
+
+## divider
+
+Man! Argument parsing in python is rad. Run `divider --help` if you wanna see what this thing does. It basically just makes it easy for me to create dividers in my code, just to make it look nice. Give it a quick read, it should be pretty understandable. It just prints the string you specify in the middle of a comment, using whatever comment syntax you feel like.
+
+##################################### nice #####################################
+################################# this is neat #################################
+############################## lets call this art ##############################
+####################### a haiku would look nice in this ########################
+######## view this file in a fixed-width font to see how this lines up #########
+
+## myRsynch.sh
+
+When working on a big project, I tweak this to send the proper local folder over to the proper remote folder. It's useful so I don't have to repeat the boilerplate code. If you specify "file/", then you'll send the directory as a whole over. If you specify "file", WITHOUT the trailing slash, then you'll send over every item in the file. I prefer to send a whole directory over from the host (WITH trailing slash) to a destination folder (WITHOUT trailing slash). That way, I simply place/overwrite the folder.
+
+## dockerPIDs.sh
+
+Output the process ID of all running docker containers
+
+## exchange.sh
+
+Rename a variable in every file in a git repo
+
+## connected <server>
+
+Ping the server represented by argument once. Only wait for 100ms to recieved a response. Pipe all stdout and stderr to /dev/null. Using some syntactic sugar from bash, read more about the "&>" redirection operator [here](https://stackoverflow.com/questions/51715927/why-is-there-a-difference-between-and-but-not-and). (NOTE: It's different from the ">&" operator used in "1>&2"!)
 
 ## cowsay-pwd
 
@@ -48,23 +68,6 @@ You can see what it looks like on my
 
 This idea is funny
 
-## myMount / unmount-myMount
+## swork & work
 
-I have these coubled with the following aliases:
-
-    alias mount-beaglebone='myMount bb /root'
-    alias mt-lnxsrv='myMount ucla /u/cs/ugrad/ari/Classes/'
-
-I love these scripts, because they make mounting my remote folders so easy!! I've implemented checks to see if I'm connected before trying to mount because sshfs doesn't fail very well, it's not that robust.
-
-![mount unmount](img/mount-unmount.gif)
-
-## connected <server>
-
-Ping the server represented by argument once. Only wait for 100ms to recieved a response. Pipe all stderr to stdout, and pipe all stdout to THE VOID
-
-
-## Dotfiles
-Read about those [here](https://github.com/AriSweedler/arisweedler-bin/tree/master/dotfiles)
-
-
+Set a work directory and restore it
