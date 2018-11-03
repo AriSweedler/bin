@@ -4,18 +4,6 @@ This is where I keep all my executables. I save them in my bin, because my bin's
 
 Also check out my [dotfiles](https://github.com/AriSweedler/dotfiles) repo!
 
-## bash\_prompt.sh
-
-Here's a script that'll help you create a custom-made PS1. You can have a fun prompt script really easily! [Source](https://stackoverflow.com/questions/45761508/whats-the-difference-between-script-or-source-script-bash-script) the shell script upon startup. You can use your ~/.bashrc for this. [Here](https://unix.stackexchange.com/questions/129143/what-is-the-purpose-of-bashrc-and-how-does-it-work) is more info on the different run command files.
-
-Boom! Just like that, you have a neat and fancy PS1. Now dive into the script and edit it if you want! All the color variables at the top are escape codes. So instead of being printed out, they simply set the terminal's pen color.
-
-Check out the following links for more details:
-
-1. Check out the [bash man page](https://linux.die.net/man/1/bash), the section titled "Prompting" (What does '\W' do?)
-
-1. Learn more about escape codes for pretty colors in bash [here](https://misc.flogisoft.com/bash/tip_colors_and_formatting)
-
 ## divider
 
 Man! Argument parsing in python is rad. Run `divider --help` if you wanna see what this thing does. It basically just makes it easy for me to create dividers in my code, just to make it look nice. Give it a quick read, it should be pretty understandable. It just prints the string you specify in the middle of a comment, using whatever comment syntax you feel like.
