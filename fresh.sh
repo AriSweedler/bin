@@ -21,7 +21,7 @@ function check-for-git() {
 
 ################################## Make a key ##################################
 function make-key() {
-  KEY="$HOME/.ssh/id_rsa"
+  KEY="$1"
   if [ ! -f $KEY ]; then
     echo "Creating $KEY and $KEY.pub"
     # execute ssh-keygen with the RSA algorithm. Use an empty passphrase and
@@ -62,18 +62,23 @@ function check-github-auth() {
 
   while true; do
     PS3="Select an option: "
-    select OPTION in "Quit" "Check again" "Generate key" do
-    case $OPTION in
-      "Quit")
-        echo "Quitting";
-        return 1;;
-      "Check again") 
-        echo "Checking again";;
-      "Generate key") 
-        echo "Generating key, then checking again";
-        make-key;;
-    esac done
-  done
+    KEY="$HOME/.ssh/id_rsa"
+    select OPTION in "Quit" "Check again" "Generate key"; do
+      case $OPTION in
+        "Quit")
+          echo "Quitting";
+          exit 1;;
+        "Check again")
+          echo "Checking again";;
+        "Generate key")
+          echo "Generating key, then checking again";
+          make-key $KEY;;
+        "Cat key")
+          echo "catting key, then checking again";
+          cat "$KEY.pub";;
+      esac
+    done #select
+  done #while
 }
 
 ############################ clone necessary repos ############################
