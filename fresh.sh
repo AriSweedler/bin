@@ -4,46 +4,62 @@
 # bash <(curl --silent https://raw.githubusercontent.com/AriSweedler/bin/master/fresh.sh)
 
 ################################ git installed ################################
-function check-for-git() {
-  if ! which git &>/dev/null; then
-    echo "git is not installed. Please install git"
-    # TODO automatically install git
-    ############################################
-    # You can download a tar.gz and make from source:
-    # https://github.com/git/git/releases
-    ############################################
-    # OR based on which (OS this is/available binary), use the package manager
-      # apt-get (debian)
-      # rpm/yum/dnf (red hat, centos)
-    ############################################
+function basic-programs() {
+  PROGRAMS="curl ssh git vim"
+  echo "Making sure we have $PROGRAMS"
+  if which apt-get; then
+    apt-get update
+    apt-get -y install $PROGRAMS
+  elif which yum; then
+    yum install $PROGRAMS
+  else
+    echo "unable to install needed programs"
+    exit 1
   fi
+  return $?
 }
 
 ################################## Make a key ##################################
-#TODO improve make-key to be able to print as wel
-function make-key() {
-  KEY="$1"
-  if [ ! -f $KEY ]; then
-    echo "Creating $KEY and $KEY.pub"
-    # execute ssh-keygen with the RSA algorithm. Use an empty passphrase and
-    # output to the file $KEY
-    ssh-keygen -t rsa -N '' -f "$KEY"
-    # TODO email the pubkey to my laptop? Somehow help me get it onto my GitHub
-  else
-    echo "$KEY already there"
+function key-tool() {
+  # Parse arguments
+  KEY="$HOME/.ssh/id_rsa"
+  while [ $1 ]; do
+    case $1 in
+      "-p"|"--print") PRINT=1 ;;
+      "-m"|"--make") MAKE=1 ;;
+      *) KEY="$1" ;;
+    esac
+    shift
+  done
+
+  # make the keypair if it doesn't already exist
+  if [ $MAKE ]; then
+    if [ ! -f $KEY ]; then
+      echo "Creating $KEY and $KEY.pub"
+      # execute ssh-keygen with the RSA algorithm. Use an empty passphrase and
+      # output to the file $KEY
+      ssh-keygen -t rsa -N '' -f "$KEY"
+    else
+      echo "$KEY already there"
+    fi
+  fi
+
+  # print the key
+  if [ $PRINT ]; then
+    echo "------------------- VVV Your public key is VVV -------------------"
+    cat "$KEY.pub"
+    echo "------------------- ^^^ Your public key is ^^^ -------------------"
   fi
 }
 
 ######################## check authentication to GitHub ########################
 function __check-github-auth() {
   # Attempt to ssh to GitHub
-  ssh -T git@github.com
+  ssh -T git@github.com &>/dev/null
   RET=$?
   if [ $RET == 1 ]; then
     return 0
   elif [ $RET == 255 ]; then
-    echo "You need a pubkey on GitHub"
-    read -p "Press any key to continue... " -n 1
     return 1
   fi
 
@@ -58,8 +74,8 @@ function check-github-auth() {
 
   if [ ! -f $KEY ]; then
     mkdir -p $(dirname $KEY)
-    echo "You have no pubkey. Generating and catting one"
-    make-key $KEY
+    echo "You have no pubkey. Generating and printing one"
+    key-tool --make --print $KEY
     cat "$KEY.pub"
   fi
 
@@ -69,7 +85,8 @@ function check-github-auth() {
       echo "User is authenticated on GitHub"
       return 0;
     else
-      echo "User is not authenticated on GitHub"
+      echo "User is not authenticated on GitHub - please supply a pubkey"
+      read -p "Press any key to continue... " -n 1
     fi
 
     select OPTION in "Quit" "Check again" "Generate key" "Cat key"; do
@@ -81,10 +98,10 @@ function check-github-auth() {
           echo "Checking again";;
         "Generate key")
           echo "Generating key, then checking again";
-          make-key $KEY;;
+          key-tool --make $KEY;;
         "Cat key")
-          echo "catting key, then checking again";
-          cat "$KEY.pub";;
+          echo "Printing key, then checking again";
+          key-tool --print $KEY;;
       esac
     done #select
   done #while
@@ -113,13 +130,8 @@ function home-repo() {
 }
 
 ############################# Invoke the functions #############################
-# TODO make sure pre-req programs are installed
-  # curl ssh git vim
-
-# make sure Git is installed
-echo "Making sure git is installed..."
-check-for-git
-echo
+# make sure all the programs are installed
+# all machines noramlly come with curl/ssh. git/vim ? Maybe. Special case this depending on what I need next summer
 
 # make sure we're authenticated with GitHub as Ari Sweedler
 echo "Making sure we're authenticated with GitHub"
@@ -133,7 +145,7 @@ for REPO in "bin" "dotfiles"; do
   home-repo $REPO &>/dev/null
   echo "done"
 done
-echo
+echo "repos cloned"
 
 ######################### run dotfiles update command #########################
 echo "Running dotfiles update command"
@@ -141,3 +153,5 @@ source $HOME/dotfiles/update.sh
 echo
 
 echo "Done! Machine is freshly set up"
+echo
+
