@@ -12,14 +12,18 @@ def myParse():
 
     # relevant syntaxes
     group = parser.add_mutually_exclusive_group(required=False)
-    group.add_argument('-c', '--cpp', action='store_true',
-        help='set comment style to C: /* * */')
-    group.add_argument('-p', '--python', action='store_true',
-        help='set comment style to python: #')
-    group.add_argument('-v', '--vim', action='store_true',
-        help='set comment style to vim: "')
-    group.add_argument('-d', '--dashes', action='store_true',
-        help='set comment style to dashes: -')
+    group.add_argument('-c', '--cpp', action='store_true', help='set comment style to C: /* * */')
+    group.add_argument('-*', '--star', action='store_true', help='set comment style to C: /* * */')
+    #
+    group.add_argument('-p', '--python', action='store_true', help='set comment style to python: #')
+    group.add_argument('-s', '--shell', action='store_true', help='set comment style to python: #')
+    group.add_argument('-b', '--bash', action='store_true', help='set comment style to python: #')
+    group.add_argument('-#', '--hash', action='store_true', help='set comment style to python: #')
+    #
+    group.add_argument('-v', '--vim', action='store_true', help='set comment style to vim: "')
+    group.add_argument('-"', '--quote', action='store_true', help='set comment style to vim: "')
+    #
+    group.add_argument('-d', '--dashes', action='store_true', help='set comment style to dashes: -')
 
     # set defaults
     parser.set_defaults(width=80, string='', indent=0)
