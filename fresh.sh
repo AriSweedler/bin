@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #invoke with
-# bash <(curl --silent <URL where this is hosted>)
+# bash <(curl --silent https://raw.githubusercontent.com/AriSweedler/bin/master/fresh.sh)
 
 ################################ git installed ################################
 function check-for-git() {
@@ -20,6 +20,7 @@ function check-for-git() {
 }
 
 ################################## Make a key ##################################
+#TODO improve make-key to be able to print as wel
 function make-key() {
   KEY="$1"
   if [ ! -f $KEY ]; then
@@ -41,7 +42,7 @@ function __check-github-auth() {
   if [ $RET == 1 ]; then
     return 0
   elif [ $RET == 255 ]; then
-    echo "Put your pubkey on GitHub"
+    echo "You need a pubkey on GitHub"
     read -p "Press any key to continue... " -n 1
     return 1
   fi
@@ -53,6 +54,15 @@ function __check-github-auth() {
 # a menu wrapper around the above command. If not authenticated, give user
 # options: "Quit" "Check again" "Generate key"
 function check-github-auth() {
+  KEY="$HOME/.ssh/id_rsa"
+
+  if [ ! -f $KEY ]; then
+    mkdir -p $(dirname $KEY)
+    echo "You have no pubkey. Generating and catting one"
+    make-key $KEY
+    cat "$KEY.pub"
+  fi
+
   if __check-github-auth; then
     echo "User is authenticated on GitHub"
     return 0;
@@ -62,7 +72,6 @@ function check-github-auth() {
 
   while true; do
     PS3="Select an option: "
-    KEY="$HOME/.ssh/id_rsa"
     select OPTION in "Quit" "Check again" "Generate key"; do
       case $OPTION in
         "Quit")
@@ -90,7 +99,7 @@ function home-repo() {
   REPO=$1
 
   # if the repo doesn't exist, then clone it to MAKE it exist/
-  if [ ! -d "$HOME/$REPO/.git" ]
+  if [ ! -d "$HOME/$REPO/.git" ]; then
     git clone "git@github.com:AriSweedler/$REPO.git"
   else
   # if the repo DOES exist, then make sure it's up to date.
