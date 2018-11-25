@@ -37,7 +37,7 @@ function make-key() {
 ######################## check authentication to GitHub ########################
 function __check-github-auth() {
   # Attempt to ssh to GitHub
-  ssh -T git@github.com &>/dev/null
+  ssh -T git@github.com
   RET=$?
   if [ $RET == 1 ]; then
     return 0
@@ -63,16 +63,16 @@ function check-github-auth() {
     cat "$KEY.pub"
   fi
 
-  if __check-github-auth; then
-    echo "User is authenticated on GitHub"
-    return 0;
-  else
-    echo "User is not authenticated on GitHub"
-  fi
-
+  PS3="Select an option: "
   while true; do
-    PS3="Select an option: "
-    select OPTION in "Quit" "Check again" "Generate key"; do
+    if __check-github-auth; then
+      echo "User is authenticated on GitHub"
+      return 0;
+    else
+      echo "User is not authenticated on GitHub"
+    fi
+
+    select OPTION in "Quit" "Check again" "Generate key" "Cat key"; do
       case $OPTION in
         "Quit")
           echo "Quitting";
@@ -113,14 +113,31 @@ function home-repo() {
 }
 
 ############################# Invoke the functions #############################
+# TODO make sure pre-req programs are installed
+  # curl ssh git vim
+
 # make sure Git is installed
+echo "Making sure git is installed..."
 check-for-git
+echo
+
 # make sure we're authenticated with GitHub as Ari Sweedler
+echo "Making sure we're authenticated with GitHub"
 check-github-auth
+echo
+
 # place these repos in our home dir
+echo "cloning repos"
 for REPO in "bin" "dotfiles"; do
-  home-repo $REPO
+  printf "  cloning $REPO... "
+  home-repo $REPO &>/dev/null
+  echo "done"
 done
+echo
 
 ######################### run dotfiles update command #########################
+echo "Running dotfiles update command"
 source $HOME/dotfiles/update.sh
+echo
+
+echo "Done! Machine is freshly set up"
