@@ -55,7 +55,7 @@ function key-tool() {
 ######################## check authentication to GitHub ########################
 function __check-github-auth() {
   # Attempt to ssh to GitHub
-  ssh -T git@github.com &>/dev/null
+  ssh -o "StrictHostKeyChecking=no" -T "git@github.com" &>/dev/null
   RET=$?
   if [ $RET == 1 ]; then
     return 0
